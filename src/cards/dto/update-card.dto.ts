@@ -1,12 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { OmitType, PartialType } from '@nestjs/swagger';
+import { CreateCardDto } from './create-card.dto';
 
-export class UpdateCardDto {
-  @ApiProperty()
-  @IsString()
-  title: string;
-
-  @ApiProperty()
-  @IsString()
-  description: string;
-}
+export class UpdateCardDto extends PartialType(
+  OmitType(CreateCardDto, ['columnId']),
+) {}

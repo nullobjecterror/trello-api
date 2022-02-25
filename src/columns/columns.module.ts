@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { ColumnsService } from './columns.service';
 import { ColumnsController } from './columns.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ColumnEntity } from './entities/column.entity';
-import { UsersModule } from 'src/users/users.module';
+import { ColumnsRepository } from './columns.repository';
+import { UsersRepository } from 'src/users/users.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ColumnEntity]), UsersModule],
+  imports: [TypeOrmModule.forFeature([ColumnsRepository, UsersRepository])],
   controllers: [ColumnsController],
   providers: [ColumnsService],
   exports: [ColumnsService],

@@ -1,5 +1,5 @@
 import { Card } from 'src/cards/entities/card.entity';
-import { User } from 'src/users/user.entity';
+import { User } from 'src/users/entities/user.entity';
 import {
   BaseEntity,
   Column,
@@ -17,8 +17,10 @@ export class ColumnEntity extends BaseEntity {
   @Column()
   title: string;
 
-  @OneToMany(() => Card, (card) => card.column, { onDelete: 'CASCADE' })
-  cards: Card[];
+  @OneToMany(() => Card, (card) => card.column, {
+    cascade: true,
+  })
+  cards?: Card[];
 
   @ManyToOne(() => User, (user) => user.columns, { onDelete: 'CASCADE' })
   user: User;

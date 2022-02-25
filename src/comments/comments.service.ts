@@ -1,22 +1,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UsersService } from 'src/users/users.service';
-import { Repository } from 'typeorm';
+import { UsersRepository } from 'src/users/users.repository';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
+import { CommentsRepository } from './comments.repository';
+import { CardsRepository } from 'src/cards/cards.repository';
 
 @Injectable()
 export class CommentsService {
   constructor(
-    @InjectRepository(Comment)
-    private commentsRepository: Repository<Comment>,
-    private userService: UsersService,
+    private commentsRepository: CommentsRepository,
+    private usersRepository: UsersRepository,
+    private cardsRepository: CardsRepository,
   ) {}
 
   async create(userId: number, createCommentDto: CreateCommentDto) {
-    const user = await this.userService.findOne(userId);
-    const comment = Comment.create({ ...createCommentDto, user });
+    const user = await this.usersRepository.findOne(userId);
+    const card = await this.cardsRepository.findOne(createCommentDto.cardId);
+    const comment = Comment.create({ ...createCommentDto, user, card });
     await comment.save();
     return comment;
   }

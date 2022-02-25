@@ -10,19 +10,32 @@ import {
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { SignUpUserDto } from './dto/sign-up.dto';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserParam } from './user.decorator';
+import { AuthService } from 'src/auth/auth.service';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthLoginDto } from 'src/auth/dto/sign-in.dto';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  @UseGuards(AuthGuard('local'))
+  @ApiBody({ type: AuthLoginDto })
+  @Post('login')
+  async login(@UserParam() user) {
+    return this.authService.login(user);
+  }
+
+  @Post('register')
+  create(@Body() createUserDto: SignUpUserDto) {
     return this.usersService.create(createUserDto);
   }
 

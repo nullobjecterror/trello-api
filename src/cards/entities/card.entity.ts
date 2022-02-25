@@ -21,9 +21,9 @@ export class Card extends BaseEntity {
   description: string;
 
   @OneToMany(() => Comment, (comment) => comment.card, {
-    onDelete: 'CASCADE',
+    cascade: true,
   })
-  comments: Comment[];
+  comments?: Comment[];
 
   @ManyToOne(() => ColumnEntity, (column) => column.cards, {
     onDelete: 'CASCADE',

@@ -24,10 +24,14 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @OneToMany(() => Comment, (comment) => comment.user)
+  @OneToMany(() => Comment, (comment) => comment.user, {
+    cascade: true,
+  })
   comments: Comment[];
 
-  @OneToMany(() => ColumnEntity, (column) => column.user)
+  @OneToMany(() => ColumnEntity, (column) => column.user, {
+    cascade: true,
+  })
   columns: ColumnEntity[];
 
   @BeforeInsert()

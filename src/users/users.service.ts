@@ -4,20 +4,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { User } from './user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+import { SignUpUserDto } from './dto/sign-up.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ColumnEntity } from 'src/columns/entities/column.entity';
 import { Comment } from 'src/comments/entities/comment.entity';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-  ) {}
+  constructor(private usersRepository: UsersRepository) {}
 
   findAll(): Promise<User[]> {
     return this.usersRepository.find();
@@ -55,7 +51,7 @@ export class UsersService {
     await this.usersRepository.delete(user);
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: SignUpUserDto) {
     if (await this.usersRepository.findOne({ email: createUserDto.email })) {
       throw new ConflictException('User already exist');
     }
@@ -73,13 +69,5 @@ export class UsersService {
       throw new NotFoundException(`User with ID=${id} not found`);
     }
     return this.usersRepository.save(user);
-  }
-
-  async findByEmail(email: string) {
-    return await User.findOne({
-      where: {
-        email: email,
-      },
-    });
   }
 }

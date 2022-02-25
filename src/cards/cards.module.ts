@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CardsController } from './cards.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Card } from './entities/card.entity';
-import { ColumnsModule } from 'src/columns/columns.module';
+import { ColumnsRepository } from 'src/columns/columns.repository';
+import { CardsRepository } from './cards.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Card]), ColumnsModule],
+  imports: [TypeOrmModule.forFeature([CardsRepository, ColumnsRepository])],
   controllers: [CardsController],
   providers: [CardsService],
 })

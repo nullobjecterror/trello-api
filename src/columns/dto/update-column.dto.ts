@@ -1,9 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
+import { CreateColumnDto } from './create-column.dto';
 
-export class UpdateColumnDto {
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  title: string;
-}
+export class UpdateColumnDto extends PartialType(CreateColumnDto) {}

@@ -1,19 +1,26 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsDefined,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateCardDto {
-  @ApiProperty()
   @IsNumber()
+  @IsDefined()
   @IsNotEmpty()
   columnId: number;
 
-  @ApiProperty()
   @IsString()
+  @IsDefined()
   @IsNotEmpty()
+  @MaxLength(256)
   title: string;
 
-  @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  @IsDefined()
+  @MaxLength(5120)
   description: string;
 }

@@ -1,9 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { OmitType, PartialType } from '@nestjs/swagger';
+import { CreateCommentDto } from './create-comment.dto';
 
-export class UpdateCommentDto {
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  text: string;
-}
+export class UpdateCommentDto extends PartialType(
+  OmitType(CreateCommentDto, ['cardId']),
+) {}
