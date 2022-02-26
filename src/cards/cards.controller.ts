@@ -36,6 +36,7 @@ export class CardsController {
   findOne(@Param('id') id: number) {
     return this.cardsService.findOne(id);
   }
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, EditCardsGuard)
   @ApiParam({ name: 'id', type: 'number' })

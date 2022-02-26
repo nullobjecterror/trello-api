@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { User } from 'src/users/entities/user.entity';
 import { UsersRepository } from 'src/users/users.repository';
+import { ResponseLoginUserDto } from './dto/response-login-user.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -10,7 +11,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login({ email }) {
+  async login({ email }): Promise<ResponseLoginUserDto> {
     const user = await this.userRepository.findByEmail(email);
 
     const payload = {

@@ -2,17 +2,28 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { ColumnsService } from './columns.service';
+import { ColumnsRepository } from './columns.repository';
 
 @Injectable()
 export class EditColumnsGuard implements CanActivate {
-  constructor(private columnService: ColumnsService) {}
+  constructor(private columnsRepository: ColumnsRepository) {}
 
   async canActivate(context: ExecutionContext) {
     const req = context.switchToHttp().getRequest();
-    const column = await this.columnService.findOne(req.params.id);
+    const column = await this.columnsRepository.findOne(req.params.id, {
+      relations: ['user'],
+    });
+
+    if (!column) {
+      throw new HttpException(
+        `Column with ID=${req.params.id} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
     const userId: number = req.user.userId;
     if (column.user.id !== userId) {
       throw new ForbiddenException();

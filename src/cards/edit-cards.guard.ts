@@ -2,19 +2,38 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { CardsService } from './cards.service';
+import { ColumnsRepository } from 'src/columns/columns.repository';
+import { CardsRepository } from './cards.repository';
 
 @Injectable()
 export class EditCardsGuard implements CanActivate {
-  constructor(private cardService: CardsService) {}
+  constructor(
+    private cardsRepository: CardsRepository,
+    private columnsRepository: ColumnsRepository,
+  ) {}
 
   async canActivate(context: ExecutionContext) {
     const req = context.switchToHttp().getRequest();
-    const card = await this.cardService.findOne(req.params.id);
+
+    const card = await this.cardsRepository.findOne(req.params.id, {
+      relations: ['column'],
+    });
+    if (!card) {
+      throw new HttpException(
+        `Card with ID=${req.params.id} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const column = await this.columnsRepository.findOne(card.column.id, {
+      relations: ['user'],
+    });
+
     const userId: number = req.user.userId;
-    if (card.column.user.id !== userId) {
+    if (column.user.id !== userId) {
       throw new ForbiddenException();
     }
 

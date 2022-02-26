@@ -7,6 +7,7 @@ import {
 import { ColumnsRepository } from 'src/columns/columns.repository';
 import { CardsRepository } from './cards.repository';
 import { CreateCardDto } from './dto/create-card.dto';
+import { ResponseCardDto } from './dto/response-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { Card } from './entities/card.entity';
 
@@ -17,14 +18,13 @@ export class CardsService {
     private columnsRepository: ColumnsRepository,
   ) {}
 
-  async create(createCardDto: CreateCardDto) {
+  async create(createCardDto: CreateCardDto): Promise<ResponseCardDto> {
     const column = await this.columnsRepository.findOne(createCardDto.columnId);
     const card = Card.create({ ...createCardDto, column });
-    await card.save();
-    return card;
+    return await card.save();
   }
 
-  findAll(): Promise<Card[]> {
+  findAll(): Promise<ResponseCardDto[]> {
     return this.cardsRepository.find();
   }
 
@@ -36,17 +36,18 @@ export class CardsService {
     return card;
   }
 
-  async update(id: number, updateCardDto: UpdateCardDto) {
-    const card = await this.cardsRepository.findOne(id);
-    if (!card) {
-      throw new HttpException('Card not found', HttpStatus.NOT_FOUND);
-    }
-    return this.cardsRepository.update({ id }, updateCardDto);
+  async update(
+    id: number,
+    updateCardDto: UpdateCardDto,
+  ): Promise<ResponseCardDto> {
+    const card = await this.cardsRepository.preload({
+      id,
+      ...updateCardDto,
+    });
+    return await this.cardsRepository.save(card);
   }
 
   async remove(id: number): Promise<void> {
-    const card = await this.cardsRepository.findOne(id);
-    if (!card) throw new NotFoundException(`Card ${id} not found`);
-    await this.cardsRepository.remove(card);
+    await this.cardsRepository.delete(id);
   }
 }

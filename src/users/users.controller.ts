@@ -30,7 +30,7 @@ export class UsersController {
   @UseGuards(AuthGuard('local'))
   @ApiBody({ type: AuthLoginDto })
   @Post('login')
-  async login(@UserParam() user) {
+  login(@UserParam() user) {
     return this.authService.login(user);
   }
 
