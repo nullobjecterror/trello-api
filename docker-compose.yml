@@ -6,10 +6,10 @@ services:
     image: postgres:14.0-alpine
     restart: always
     environment:
-      - POSTGRES_USER=${USERNAME}
-      - POSTGRES_PASSWORD=${PASSWORD}
-      - POSTGRES_DB=${DATABASE}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     ports:
-      - ${PORT}:${PORT}
+      - 5432:5432
