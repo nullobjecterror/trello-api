@@ -1,0 +1,35 @@
+Project TrelloApi {
+  database_type: 'PostgreSQL'
+  Note: '''
+    # Trello-api Database
+    **markdown content here**
+  '''
+}
+Table users {
+  id int [pk, increment]
+  email varchar 
+  password varchar
+  note: "table 'users' contains user information"
+}
+
+Table column {
+  id int [pk, increment]
+  user_id int [ref: > users.id]
+  header varchar 
+  note: "table 'column' contains cards"
+}
+
+Table card {
+  id int [pk, increment]
+  column_id int [ref: > column.id]
+  header varchar 
+  description varchar
+  note: "table 'card' contains header, description and comments"
+}
+Table comment {
+  id int [pk, increment]
+  author_id int [ref: > users.id]
+  text varchar  
+  card_id int [ref: > card.id]
+  note: "table 'comment' contains comment's text, id author and card"
+ }
