@@ -28,12 +28,10 @@ export class EditCardsGuard implements CanActivate {
         HttpStatus.NOT_FOUND,
       );
     }
-    const column = await this.columnsRepository.findOne(card.column.id, {
-      relations: ['user'],
-    });
+    const column = await this.columnsRepository.findOne(card.column.id);
 
     const userId: number = req.user.userId;
-    if (column.user.id !== userId) {
+    if (column.userId !== userId) {
       throw new ForbiddenException();
     }
 

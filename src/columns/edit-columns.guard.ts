@@ -14,9 +14,7 @@ export class EditColumnsGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const req = context.switchToHttp().getRequest();
-    const column = await this.columnsRepository.findOne(req.params.id, {
-      relations: ['user'],
-    });
+    const column = await this.columnsRepository.findOne(req.params.id);
 
     if (!column) {
       throw new HttpException(
@@ -25,7 +23,7 @@ export class EditColumnsGuard implements CanActivate {
       );
     }
     const userId: number = req.user.userId;
-    if (column.user.id !== userId) {
+    if (column.userId !== userId) {
       throw new ForbiddenException();
     }
 

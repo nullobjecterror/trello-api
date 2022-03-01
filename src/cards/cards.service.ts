@@ -1,10 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { ColumnsRepository } from 'src/columns/columns.repository';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CardsRepository } from './cards.repository';
 import { CreateCardDto } from './dto/create-card.dto';
 import { ResponseCardDto } from './dto/response-card.dto';
@@ -13,14 +7,10 @@ import { Card } from './entities/card.entity';
 
 @Injectable()
 export class CardsService {
-  constructor(
-    private cardsRepository: CardsRepository,
-    private columnsRepository: ColumnsRepository,
-  ) {}
+  constructor(private cardsRepository: CardsRepository) {}
 
   async create(createCardDto: CreateCardDto): Promise<ResponseCardDto> {
-    const column = await this.columnsRepository.findOne(createCardDto.columnId);
-    const card = Card.create({ ...createCardDto, column });
+    const card = Card.create(createCardDto);
     return await card.save();
   }
 
@@ -28,10 +18,8 @@ export class CardsService {
     return this.cardsRepository.find();
   }
 
-  async findOne(id: number): Promise<Card> {
-    const card = await this.cardsRepository.findOne(id, {
-      relations: ['column', 'comments'],
-    });
+  async findOne(id: number): Promise<ResponseCardDto> {
+    const card = await this.cardsRepository.findOne(id);
     if (!card) throw new NotFoundException(`Card ${id} not found`);
     return card;
   }

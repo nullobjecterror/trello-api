@@ -27,12 +27,12 @@ export class User extends BaseEntity {
   @OneToMany(() => Comment, (comment) => comment.user, {
     cascade: true,
   })
-  comments: Comment[];
+  comments?: Comment[];
 
   @OneToMany(() => ColumnEntity, (column) => column.user, {
     cascade: true,
   })
-  columns: ColumnEntity[];
+  columns?: ColumnEntity[];
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -23,5 +23,8 @@ export class ColumnEntity extends BaseEntity {
   cards?: Card[];
 
   @ManyToOne(() => User, (user) => user.columns, { onDelete: 'CASCADE' })
-  user: User;
+  user?: User;
+
+  @Column()
+  userId?: number;
 }

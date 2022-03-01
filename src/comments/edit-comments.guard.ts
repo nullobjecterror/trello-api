@@ -14,9 +14,7 @@ export class EditCommentsGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const req = context.switchToHttp().getRequest();
-    const comment = await this.commentsRepository.findOne(req.params.id, {
-      relations: ['user'],
-    });
+    const comment = await this.commentsRepository.findOne(req.params.id);
     if (!comment) {
       throw new HttpException(
         `Comment with ID=${req.params.id} not found`,
@@ -24,7 +22,7 @@ export class EditCommentsGuard implements CanActivate {
       );
     }
     const userId: number = req.user.userId;
-    if (comment.user.id !== userId) {
+    if (comment.userId !== userId) {
       throw new ForbiddenException();
     }
 

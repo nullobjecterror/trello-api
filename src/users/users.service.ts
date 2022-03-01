@@ -38,10 +38,8 @@ export class UsersService {
     return user.comments;
   }
 
-  async findOne(id: number): Promise<User> {
-    const user = await this.usersRepository.findOne(id, {
-      relations: ['columns', 'comments'],
-    });
+  async findOne(id: number): Promise<ResponseUserDto> {
+    const user = await this.usersRepository.findOne(id);
     if (!user) throw new NotFoundException(`User ${id} not found`);
     return user;
   }

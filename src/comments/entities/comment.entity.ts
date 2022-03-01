@@ -17,8 +17,14 @@ export class Comment extends BaseEntity {
   text: string;
 
   @ManyToOne(() => Card, (card) => card.comments, { onDelete: 'CASCADE' })
-  card: Card;
+  card?: Card;
 
   @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
-  user: User;
+  user?: User;
+
+  @Column()
+  cardId?: number;
+
+  @Column()
+  userId?: number;
 }
