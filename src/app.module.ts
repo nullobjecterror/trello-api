@@ -14,6 +14,7 @@ import { CommentsModule } from './comments/comments.module';
       validationSchema: Joi.object({
         API_PORT: Joi.number().required(),
         JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRES_IN: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot(),
