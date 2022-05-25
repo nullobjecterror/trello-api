@@ -22,7 +22,7 @@ export class ColumnsService {
 
   async findOne(id: number): Promise<ResponseColumnDto> {
     const column = await this.columnsRepository.findOne(id);
-    if (!column) throw new NotFoundException(`Column with ID=${id} not found`);
+    if (!column) throw new NotFoundException(` Column ${id} not found`);
 
     return column;
   }
@@ -31,11 +31,14 @@ export class ColumnsService {
     id: number,
     updateColumnDto: UpdateColumnDto,
   ): Promise<ResponseColumnDto> {
-    const column = await this.columnsRepository.preload({
-      id,
+    const column = await this.columnsRepository.findOne(id, { select: ['id'] });
+
+    if (!column) throw new NotFoundException(`Column ${id} not found`);
+
+    return this.columnsRepository.save({
+      ...column,
       ...updateColumnDto,
     });
-    return this.columnsRepository.save(column);
   }
 
   async remove(id: number): Promise<void> {

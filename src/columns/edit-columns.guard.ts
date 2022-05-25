@@ -18,7 +18,7 @@ export class EditColumnsGuard implements CanActivate {
 
     if (!column) {
       throw new HttpException(
-        `Column with ID=${req.params.id} not found`,
+        ` Column ${req.params.id} not found`,
         HttpStatus.NOT_FOUND,
       );
     }

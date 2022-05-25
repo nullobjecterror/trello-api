@@ -28,11 +28,14 @@ export class CardsService {
     id: number,
     updateCardDto: UpdateCardDto,
   ): Promise<ResponseCardDto> {
-    const card = await this.cardsRepository.preload({
-      id,
+    const card = await this.cardsRepository.findOne(id, { select: ['id'] });
+
+    if (!card) throw new NotFoundException(`Card ${id} not found`);
+
+    return this.cardsRepository.save({
+      ...card,
       ...updateCardDto,
     });
-    return this.cardsRepository.save(card);
   }
 
   async remove(id: number): Promise<void> {

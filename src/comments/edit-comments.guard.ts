@@ -17,7 +17,7 @@ export class EditCommentsGuard implements CanActivate {
     const comment = await this.commentsRepository.findOne(req.params.id);
     if (!comment) {
       throw new HttpException(
-        `Comment with ID=${req.params.id} not found`,
+        `Comment ${req.params.id} not found`,
         HttpStatus.NOT_FOUND,
       );
     }

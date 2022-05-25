@@ -24,7 +24,7 @@ export class EditCardsGuard implements CanActivate {
     });
     if (!card) {
       throw new HttpException(
-        `Card with ID=${req.params.id} not found`,
+        `Card ${req.params.id} not found`,
         HttpStatus.NOT_FOUND,
       );
     }
