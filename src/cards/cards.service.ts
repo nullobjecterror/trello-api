@@ -11,7 +11,7 @@ export class CardsService {
 
   async create(createCardDto: CreateCardDto): Promise<ResponseCardDto> {
     const card = Card.create(createCardDto);
-    return await card.save();
+    return card.save();
   }
 
   findAll(): Promise<ResponseCardDto[]> {
@@ -32,7 +32,7 @@ export class CardsService {
       id,
       ...updateCardDto,
     });
-    return await this.cardsRepository.save(card);
+    return this.cardsRepository.save(card);
   }
 
   async remove(id: number): Promise<void> {

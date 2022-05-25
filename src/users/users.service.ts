@@ -54,7 +54,7 @@ export class UsersService {
       throw new ConflictException('User already exist');
     }
     const user = User.create(createUserDto);
-    return await user.save();
+    return user.save();
   }
 
   async update(
@@ -65,6 +65,6 @@ export class UsersService {
       id,
       ...updateUserDto,
     });
-    return await this.usersRepository.save(user);
+    return this.usersRepository.save(user);
   }
 }

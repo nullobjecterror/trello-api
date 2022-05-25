@@ -20,7 +20,7 @@ export class CommentsService {
     createCommentDto: CreateCommentDto,
   ): Promise<ResponseCommentDto> {
     const comment = Comment.create({ ...createCommentDto, userId });
-    return await comment.save();
+    return comment.save();
   }
 
   findAll(): Promise<ResponseCommentDto[]> {
@@ -38,7 +38,7 @@ export class CommentsService {
     id: number,
     updateCommentDto: UpdateCommentDto,
   ): Promise<ResponseCommentDto> {
-    return await this.commentsRepository.save({ id, ...updateCommentDto });
+    return this.commentsRepository.save({ id, ...updateCommentDto });
   }
 
   async remove(id: number): Promise<void> {

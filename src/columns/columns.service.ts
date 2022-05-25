@@ -13,7 +13,7 @@ export class ColumnsService {
     createColumnDto: CreateColumnDto,
   ): Promise<ResponseColumnDto> {
     const column = ColumnEntity.create({ ...createColumnDto, userId });
-    return await column.save();
+    return column.save();
   }
 
   findAll(): Promise<ResponseColumnDto[]> {
@@ -35,7 +35,7 @@ export class ColumnsService {
       id,
       ...updateColumnDto,
     });
-    return await this.columnsRepository.save(column);
+    return this.columnsRepository.save(column);
   }
 
   async remove(id: number): Promise<void> {
